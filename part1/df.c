@@ -56,7 +56,7 @@ philosopher(void * t_id)
     int id = *(int *)t_id;
     int numMeals = 0;
     srand(time(NULL)); /*seeding rand num generator*/
-    while (numMeals < MIN_MEALS) {
+    while (numMeals < MIN_MEALS || (rand() % 10) > 5) {
 		sem_wait(&forks[id]);
 		sem_wait(&forks[(id+1)%num_phils]);
 		change_phil_state(id,MAX_EATING_TIME);
