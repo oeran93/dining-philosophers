@@ -35,9 +35,37 @@ check_args(int argc)
     }
 }
 
+//void print_header(int max_num){
+//	if (max_num < num_phils) {
+//		print_header(max_num*10);
+//	}
+//	for (int i = 0; i < num_phils; i++) {
+//		char digit = (i < max_num) ? ' ' : (i / max_num); 
+//		printf("%c", digit);
+//	}
+//}
+
 void 
 __init()
 {
+	for (int i = 0; i < num_phils; i++) {
+		if (i >=10) {
+			printf("%d",(i / 10));
+		}
+		else {
+			printf(" ");
+		}
+	}
+	printf("\n");
+	for (int i = 0; i < num_phils; i++) {
+		if (i >=10) {
+			printf("%d",(i % 10));
+		}
+		else {
+			printf("%d",i);
+		}
+	}
+	printf("\n");
     threads = malloc(sizeof(pthread_t)*num_phils);
     forks = malloc(sizeof(sem_t)*num_phils);
     phils_state = malloc(sizeof(int)*num_phils);
@@ -60,11 +88,11 @@ philosopher(void * t_id)
 		sem_wait(&forks[id]);
 		sem_wait(&forks[(id+1)%num_phils]);
 		change_phil_state(id,MAX_EATING_TIME);
+		change_phil_state(id,MAX_THINKING_TIME);
 		sem_post(&forks[(id+1)%num_phils]);
 		sem_post(&forks[id]);
 		numMeals++;
-		change_phil_state(id,MAX_THINKING_TIME);
-    }
+	}
     return 0;
 }
 
@@ -84,7 +112,7 @@ void
 print_dining_room()
 {
     for (int i = 0; i < num_phils; i++) {
-		printf("%c ", (phils_state[i]==thinking) ? ' ' : '*');
+		printf("%c", (phils_state[i]==thinking) ? ' ' : '*');
     }
     printf("\n");
     fflush(stdout);
