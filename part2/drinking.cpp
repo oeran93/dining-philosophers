@@ -12,7 +12,7 @@
 #define MAX_THINKING_TIME 10
 #define MAX_DRINKING_TIME 5
 
-#define DEBUG 1
+#define DEBUG 0
 
 
 std::vector<philosopher*> philosophers;
@@ -178,10 +178,10 @@ int main(int argc, char **argv) {
 	parse_matrix(argv[1]);
 	threads = new pthread_t[philosophers.size()];
 	
-	for (int i = 0; i < philosophers.size(); i++) {
+	for (unsigned int i = 0; i < philosophers.size(); i++) {
 		pthread_create(&threads[i], NULL, philosopher_thread, (void*)(philosophers[i]));
 	}
-	for (int i = 0; i < philosophers.size(); i++) {
+	for (unsigned int i = 0; i < philosophers.size(); i++) {
 		pthread_join(threads[i], NULL);
 	}
 
