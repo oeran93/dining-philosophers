@@ -27,8 +27,11 @@ typedef struct _PHILOSOPHER {
 } philosopher;
 
 
+// returns random int in range min - max INCLUSIVE
+int rand_range(int min, int max);
+
 // creates a bottle for left and right to share
-void create_bottle(philosopher *left, philosopher *right);
+void create_bottle(philosopher *left, philosopher *right, int i, int j);
 
 // load a matrix from a file and create the needed philosophers and bottles
 void parse_matrix(char *filename);
@@ -37,10 +40,10 @@ void parse_matrix(char *filename);
 void* philosopher_thread(void *t_id);
 
 // chooses random bottles for a drinking session, accepts ptr to array of sem_t's, and count
-void choose_bottles(philosopher *p, bottle **chosen_bottles, int *chosen_bottle_count);
+std::vector<bottle*> choose_bottles(philosopher *p);
 
 // busy waits for state changes. states do not change in functions.
 void think();
 
 // busy waits, but also requests bottles in order
-void drink(bottle **chosen_bottles, int chosen_bottle_count);
+void drink(std::vector<bottle*> chosen_bottles, philosopher *p);
