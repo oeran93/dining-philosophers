@@ -15,7 +15,8 @@ void check_args(int);
 */
 void __init();
 /*
-* simulates the actions of a philosopher @param void * philosopher id
+* simulates the actions of a philosopher 
+* @param void * philosopher id
 */
 void * philosopher(void *);
 /*
