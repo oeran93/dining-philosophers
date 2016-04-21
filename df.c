@@ -12,9 +12,7 @@ enum {thinking, eating};
 int * phils_state; 
 int * phils_id;
 
-int 
-main(int argc, char ** argv) 
-{
+int main(int argc, char ** argv) {
     check_args(argc);
     num_phils = atoi(argv[1]);
     __init();
@@ -26,46 +24,29 @@ main(int argc, char ** argv)
     }
 }
 
-void 
-check_args(int argc)
-{
+void check_args(int argc) {
     if (argc != 2) {
-		printf("usage:\n ./df number_philosophers\n");
+		printf("usage:\t ./df number_philosophers\n");
 		_exit(1);
     }
 }
 
-//void print_header(int max_num){
-//	if (max_num < num_phils) {
-//		print_header(max_num*10);
-//	}
-//	for (int i = 0; i < num_phils; i++) {
-//		char digit = (i < max_num) ? ' ' : (i / max_num); 
-//		printf("%c", digit);
-//	}
-//}
-
-void 
-__init()
-{
+void print_header(int mult_of_ten) {
 	for (int i = 0; i < num_phils; i++) {
-		if (i >=10) {
-			printf("%d",(i / 10));
-		}
-		else {
+		if (i < mult_of_ten && (i != 0 || mult_of_ten > 1)) {
 			printf(" ");
+		}else {
+			printf("%d",((i / mult_of_ten) % 10));
 		}
 	}
 	printf("\n");
-	for (int i = 0; i < num_phils; i++) {
-		if (i >=10) {
-			printf("%d",(i % 10));
-		}
-		else {
-			printf("%d",i);
-		}
-	}
-	printf("\n");
+	if (mult_of_ten == 1) return;
+	print_header(mult_of_ten/10);
+}
+
+void __init() {
+	int mult_of_ten = pow(10,(int)floor(log10(num_phils)));
+	print_header(mult_of_ten);
     threads = malloc(sizeof(pthread_t)*num_phils);
     forks = malloc(sizeof(sem_t)*num_phils);
     phils_state = malloc(sizeof(int)*num_phils);
@@ -78,9 +59,7 @@ __init()
     sem_init(&state,0,1);
 }
 
-void * 
-philosopher(void * t_id) 
-{ 
+void * philosopher(void * t_id) { 
     int id = *(int *)t_id;
     int numMeals = 0;
     srand(time(NULL)); /*seeding rand num generator*/
@@ -96,9 +75,7 @@ philosopher(void * t_id)
     return 0;
 }
 
-void 
-change_phil_state(int id, int max_time) 
-{
+void change_phil_state(int id, int max_time) {
     int min_time = 1;
     int sleep_time = (rand() % max_time) + min_time;
     sem_wait(&state);
@@ -108,9 +85,7 @@ change_phil_state(int id, int max_time)
     sleep(sleep_time);
 }
 
-void 
-print_dining_room()
-{
+void print_dining_room() {
     for (int i = 0; i < num_phils; i++) {
 		printf("%c", (phils_state[i]==thinking) ? ' ' : '*');
     }
