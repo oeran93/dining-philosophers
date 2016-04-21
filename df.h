@@ -4,6 +4,7 @@
 #include <stdio.h> 
 #include <unistd.h> 
 #include <stdlib.h>
+#include <math.h>
 
 /*
 * checks that exactly 1 argument was passed to the program, prints usage and
